@@ -12,6 +12,12 @@ const P: Record<string, ReactNode> = {
   bill: <path d="M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6" />,
   plus: <path d="M12 5v14M5 12h14" />,
   del: <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" />,
+  hist: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 3" />
+    </>
+  ),
   search: (
     <>
       <circle cx="11" cy="11" r="7" />

@@ -1,13 +1,18 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import type { ErpModule } from '@/lib/erp-data'
+import { todayStr, type ErpModule, type ImportEntry } from '@/lib/erp-data'
 import { Ic } from './ErpIcons'
+import ImportPage from './ImportPage'
 
 interface ModulePageProps {
   mod: ErpModule
+  importEntries: ImportEntry[]
+  importsLoaded: boolean
   onAdd: (modId: string, row: string[]) => void
   onDelete: (modId: string, rowIndex: number) => void
+  onAddImport: (entry: Omit<ImportEntry, 'id'>) => Promise<void>
+  onDeleteImport: (id: string) => void
   toast: (msg: string) => void
 }
 
@@ -19,10 +24,41 @@ function Cell({ v }: { v: string }) {
   return <>{v}</>
 }
 
-export default function ModulePage({ mod, onAdd, onDelete, toast }: ModulePageProps) {
+export default function ModulePage({
+  mod,
+  importEntries,
+  importsLoaded,
+  onAdd,
+  onDelete,
+  onAddImport,
+  onDeleteImport,
+  toast,
+}: ModulePageProps) {
+  // Material Import has its own dedicated page (custom form + history)
+  if (mod.id === 'import') {
+    return (
+      <ImportPage
+        entries={importEntries}
+        loaded={importsLoaded}
+        onAdd={onAddImport}
+        onDelete={onDeleteImport}
+        toast={toast}
+      />
+    )
+  }
+  return <GenericPage mod={mod} onAdd={onAdd} onDelete={onDelete} toast={toast} />
+}
+
+function GenericPage({
+  mod,
+  onAdd,
+  onDelete,
+  toast,
+}: Pick<ModulePageProps, 'mod' | 'onAdd' | 'onDelete' | 'toast'>) {
   const [q, setQ] = useState('')
   const [formOpen, setFormOpen] = useState(false)
-  const [vals, setVals] = useState<string[]>(() => mod.cols.map(() => ''))
+  const initVals = (cols: string[]) => cols.map((c) => (c === 'Date' ? todayStr() : ''))
+  const [vals, setVals] = useState<string[]>(() => initVals(mod.cols))
 
   // visible rows keep their ORIGINAL index so delete targets the right entry
   const visible = useMemo(() => {
@@ -39,7 +75,7 @@ export default function ModulePage({ mod, onAdd, onDelete, toast }: ModulePagePr
       return
     }
     onAdd(mod.id, row)
-    setVals(mod.cols.map(() => ''))
+    setVals(initVals(mod.cols))
     setFormOpen(false)
   }
 
@@ -54,8 +90,8 @@ export default function ModulePage({ mod, onAdd, onDelete, toast }: ModulePagePr
         <button
           className="btn"
           onClick={() => {
+            setVals(initVals(mod.cols)) // Date defaults to today
             setFormOpen(true)
-            setVals(mod.cols.map(() => ''))
           }}
         >
           <Ic name="plus" />
@@ -78,6 +114,7 @@ export default function ModulePage({ mod, onAdd, onDelete, toast }: ModulePagePr
           {mod.cols.map((c, i) => (
             <input
               key={c}
+              type={c === 'Date' ? 'date' : 'text'}
               value={vals[i]}
               placeholder={c}
               aria-label={c}

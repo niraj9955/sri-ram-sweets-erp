@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { MODULES, type ErpModule } from '@/lib/erp-data'
+import { MODULES, type ErpModule, type ImportEntry } from '@/lib/erp-data'
 import { BrandLogo, Ic } from './ErpIcons'
 import Dashboard from './Dashboard'
 import ModulePage from './ModulePage'
@@ -31,6 +31,25 @@ export default function ErpApp() {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [toastMsg, setToastMsg] = useState('')
   const [toastShow, setToastShow] = useState(false)
+  const [imports, setImports] = useState<ImportEntry[]>([])
+  const [importsLoaded, setImportsLoaded] = useState(false)
+
+  // load material imports from database
+  useEffect(() => {
+    let alive = true
+    fetch('/api/imports')
+      .then((r) => r.json())
+      .then((d) => {
+        if (alive && Array.isArray(d)) setImports(d)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setImportsLoaded(true)
+      })
+    return () => {
+      alive = false
+    }
+  }, [])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
@@ -69,6 +88,42 @@ export default function ErpApp() {
       toast('Entry deleted')
     },
     [toast]
+  )
+
+  const addImport = useCallback(
+    async (entry: Omit<ImportEntry, 'id'>) => {
+      try {
+        const res = await fetch('/api/imports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entry),
+        })
+        if (!res.ok) {
+          toast('Please fill all fields')
+          return
+        }
+        const created: ImportEntry = await res.json()
+        setImports((prev) => [created, ...prev])
+        toast('Entry saved')
+      } catch {
+        toast('Failed to save entry')
+      }
+    },
+    [toast]
+  )
+
+  const deleteImport = useCallback(
+    (id: string) => {
+      setImports((prev) => prev.filter((e) => e.id !== id))
+      fetch(`/api/imports/${id}`, { method: 'DELETE' }).catch(() => {})
+      toast('Entry deleted')
+    },
+    [toast]
+  )
+
+  const countFor = useCallback(
+    (m: ErpModule) => (m.id === 'import' ? imports.length : m.rows.length),
+    [imports]
   )
 
   const onGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -124,7 +179,7 @@ export default function ErpApp() {
               >
                 <Ic name={m.id} />
                 <span className="lb">{m.n}</span>
-                <span className="bd">{m.rows.length}</span>
+                <span className="bd">{countFor(m)}</span>
               </button>
             </li>
           ))}
@@ -174,8 +229,12 @@ export default function ErpApp() {
           <ModulePage
             key={curMod.id}
             mod={curMod}
+            importEntries={imports}
+            importsLoaded={importsLoaded}
             onAdd={addRow}
             onDelete={deleteRow}
+            onAddImport={addImport}
+            onDeleteImport={deleteImport}
             toast={toast}
           />
         ) : (
