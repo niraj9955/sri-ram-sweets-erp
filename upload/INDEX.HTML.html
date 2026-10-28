@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sri Ram Sweets ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f3f0;--sf:#fff;--ink:#241a17;--mu:#74665e;--ln:#e6e0d9;--side:#3b1019;--sideh:#4d1927;--sink:#ead9cd;--ac:#d9780a;--acs:#fdf0dc;--head:#3b1019;--ok:#1f7a4d;--okb:#e2f3ea;--wn:#a8560a;--wnb:#fdeed9;--sh:0 1px 2px rgba(36,26,23,.06),0 4px 14px rgba(36,26,23,.05);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#240a10;--sideh:#37131d;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19}}
+:root[data-theme="dark"]{--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#240a10;--sideh:#37131d;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:Mukta,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.app{display:grid;grid-template-columns:256px 1fr;grid-template-rows:64px 1fr auto;grid-template-areas:"side top" "side main" "side foot";height:100%;transition:grid-template-columns .25s}
+.app.mini{grid-template-columns:72px 1fr}
+aside{grid-area:side;background:var(--side);color:var(--sink);display:flex;flex-direction:column;overflow:hidden;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;height:64px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.brand b{font:400 19px/1.05 'Rozha One',serif;color:#fff;white-space:nowrap}
+.brand span{display:block;font:500 10.5px Mukta;opacity:.6;margin-top:2px;white-space:nowrap}
+.mt{padding:18px 22px 6px;font-size:12.5px;opacity:.5;white-space:nowrap}
+.nav{list-style:none;padding:4px 12px;overflow:auto;flex:1}
+.nav button{width:100%;display:flex;align-items:center;gap:13px;background:none;border:0;color:inherit;font:500 15px Mukta;padding:10px 12px;border-radius:8px;cursor:pointer;text-align:left;margin-bottom:2px;white-space:nowrap;position:relative}
+.nav button:hover{background:var(--sideh)}
+.nav button.on{background:var(--sideh);color:#fff}
+.nav button.on::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--ac)}
+.nav button.on svg{color:var(--ac)}
+.bd{margin-left:auto;font-size:12px;background:rgba(255,255,255,.1);border-radius:20px;padding:0 8px}
+.sfo{padding:14px 22px;font-size:12px;opacity:.5;border-top:1px solid rgba(255,255,255,.08);white-space:nowrap}
+.mini .brand b,.mini .brand span,.mini .mt,.mini .lb,.mini .bd,.mini .sfo{display:none}
+.mini .nav button{justify-content:center;padding:10px 0}
+.mini .nav button.on::before{left:-12px}
+header{grid-area:top;background:var(--sf);border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:14px;padding:0 24px}
+.ib{background:none;border:1px solid var(--ln);color:var(--ink);width:38px;height:38px;border-radius:9px;cursor:pointer;display:grid;place-items:center;position:relative}
+.ib:hover{background:var(--bg)}
+.ib:focus-visible,.nav button:focus-visible,.card:focus-visible,.btn:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.sr{flex:1;max-width:380px;position:relative}
+.sr input{width:100%;padding-left:38px;background:var(--bg)}
+.sr svg{position:absolute;left:11px;top:11px;width:17px;height:17px;color:var(--mu)}
+.sp{flex:1}
+.dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--ac);border:2px solid var(--sf)}
+.user{display:flex;align-items:center;gap:10px;padding-left:14px;border-left:1px solid var(--ln);line-height:1.15}
+.user small{color:var(--mu);font-size:12.5px;display:block}
+.av{width:36px;height:36px;border-radius:50%;background:var(--head);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px}
+:root[data-theme="dark"] .av{background:var(--ac);color:#241a17}
+main{grid-area:main;overflow:auto;padding:26px 30px}
+.crumb{color:var(--mu);font-size:13.5px;margin-bottom:2px}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h2{font-size:26px;font-weight:700;letter-spacing:-.2px}
+.sub{color:var(--mu);font-size:14.5px}
+h3{font-size:16px;font-weight:600;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
+.panel,.stat{background:var(--sf);border:1px solid var(--ln);border-radius:12px;box-shadow:var(--sh)}
+.stat{padding:16px 18px}
+.stat p{color:var(--mu);font-size:13.5px}
+.stat strong{display:block;font-size:26px;font-weight:700;margin:2px 0}
+.tr{font-size:13px;color:var(--ok)}.tr.dn{color:var(--wn)}
+.two{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:24px}
+.panel{padding:18px 20px}
+.chart{display:flex;align-items:flex-end;gap:12px;height:170px;padding-top:8px}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--mu);gap:6px}
+.chart i{display:block;width:100%;max-width:44px;border-radius:5px 5px 0 0;background:#c9b6a6}
+.chart .t i{background:var(--ac)}
+.act{list-style:none;padding:0}
+.act li{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--ln);font-size:14px}
+.act li:first-child{border:0;padding-top:0}
+.act em{font-style:normal;color:var(--mu);font-size:12.5px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:18px;cursor:pointer;text-align:left;font:inherit;color:inherit;display:flex;gap:14px;align-items:center;box-shadow:var(--sh);transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--ac);transform:translateY(-2px)}
+.ci{width:46px;height:46px;border-radius:11px;background:var(--acs);color:var(--ac);display:grid;place-items:center;flex-shrink:0}
+.ci svg{width:23px;height:23px}
+.card b{display:block;font-size:16px;font-weight:600}.card span{color:var(--mu);font-size:13.5px}
+.bar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.btn{background:var(--head);color:#fff;border:0;border-radius:9px;padding:9px 16px;font:600 14.5px Mukta;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{filter:brightness(1.2)}
+:root[data-theme="dark"] .btn{background:var(--ac);color:#241a17}
+.btn.g{background:var(--sf);color:var(--ink);border:1px solid var(--ln);font-weight:500}
+input{font:inherit;font-size:14.5px;padding:9px 12px;border-radius:9px;border:1px solid var(--ln);background:var(--sf);color:var(--ink)}
+.tw{overflow:auto;padding:0}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{text-align:left;font-weight:600;font-size:13px;color:var(--mu);padding:12px 18px;background:var(--bg);border-bottom:1px solid var(--ln)}
+td{padding:12px 18px;border-bottom:1px solid var(--ln);font-size:14.5px}
+tr:last-child td{border:0}
+tr:hover td{background:var(--bg)}
+.pill{display:inline-block;border-radius:20px;padding:1px 11px;font-size:12.5px;font-weight:600;background:var(--okb);color:var(--ok)}
+.pill.w{background:var(--wnb);color:var(--wn)}
+.x{background:none;border:0;color:var(--mu);cursor:pointer;padding:4px;border-radius:6px}
+.x:hover{color:#b42318;background:var(--bg)}
+.empty{padding:36px;text-align:center;color:var(--mu)}
+.fm{margin-bottom:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+footer{grid-area:foot;background:var(--sf);border-top:1px solid var(--ln);color:var(--mu);padding:13px 30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:13px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--head);color:#fff;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;pointer-events:none;transition:.25s;z-index:40}
+.toast.s{transform:none;opacity:1}
+.ov{display:none}
+@media (max-width:860px){
+.app,.app.mini{grid-template-columns:1fr}
+aside{position:fixed;inset:0 auto 0 0;width:256px;transform:translateX(-100%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px)}
+.app.open aside{transform:none}
+.app.open .ov{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:15}
+.app.mini .brand b,.app.mini .brand span,.app.mini .mt,.app.mini .lb,.app.mini .bd,.app.mini .sfo{display:revert}
+.app.mini .nav button{justify-content:flex-start;padding:10px 12px}
+.two{grid-template-columns:1fr}.user div,.sr{display:none}.sp{display:block}
+main{padding:20px 16px}header{padding:0 14px}footer{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside aria-label="Main menu">
+    <div class="brand">
+      <svg width="38" height="38" viewBox="0 0 48 48" aria-label="Sri Ram Sweets logo">
+        <circle cx="24" cy="24" r="23" fill="#d9780a"/><circle cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1"/>
+        <circle cx="24" cy="27" r="11" fill="#7c2d12"/>
+        <circle cx="20" cy="23" r="1.8" fill="#fbd38d"/><circle cx="27" cy="22" r="1.8" fill="#fbd38d"/><circle cx="24" cy="29" r="1.8" fill="#fbd38d"/><circle cx="18" cy="30" r="1.8" fill="#fbd38d"/><circle cx="30" cy="29" r="1.8" fill="#fbd38d"/>
+        <path d="M24 16c-3-5-8-5-9-2 3 0 6 1 9 2zM24 16c3-5 8-5 9-2-3 0-6 1-9 2z" fill="#fff"/>
+      </svg>
+      <div><b>Sri Ram</b><span>Sweets &amp; Namkeen</span></div>
+    </div>
+    <div class="mt">Menu</div>
+    <ul class="nav" id="nav"></ul>
+    <div class="sfo">Sri Ram Sweets ERP v1.0</div>
+  </aside>
+  <div class="ov" id="ov"></div>
+  <header>
+    <button class="ib" id="tg" aria-label="Toggle menu"><svg class="i" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="sr"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="gs" type="search" placeholder="Search modules, press Enter" aria-label="Search modules"></div>
+    <div class="sp"></div>
+    <button class="ib" id="th" aria-label="Switch theme"><svg class="i" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+    <button class="ib" aria-label="Notifications"><svg class="i" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="dot"></span></button>
+    <div class="user"><div class="av">RS</div><div>Ram Sharma<small>Administrator</small></div></div>
+  </header>
+  <main id="main"></main>
+  <footer><span>© 2026 Sri Ram Sweets. All rights reserved.</span><span id="today"></span></footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+var P={home:'<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/>',
+import:'<path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/>',
+product:'<path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0L3 13V3h10l7.6 7.6a2 2 0 010 2.8zM7.5 7.5h.01"/>',
+prod:'<path d="M12 2l10 5-10 5L2 7zM2 12l10 5 10-5M2 17l10 5 10-5"/>',
+sale:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+bal:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+ret:'<path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/>',
+rep:'<path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9zM14 3v6h6M8 13h8M8 17h8"/>',
+bill:'<path d="M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',del:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>'};
+function ic(k){return '<svg class="i" viewBox="0 0 24 24">'+P[k]+'</svg>'}
+var MODS=[
+{id:'import',n:'Material Import',d:'Raw material inward entries',cols:['Material','Supplier','Qty (kg)','Rate (₹)'],rows:[['Sugar','Gupta Traders','200','44'],['Desi Ghee','Amul Depot','80','610'],['Refined Flour','Sharma Mill','150','32']]},
+{id:'product',n:'Product',d:'Sweets and snacks catalogue',cols:['Product','Category','Price (₹/kg)','Status'],rows:[['Kaju Katli','Sweets','900','Active'],['Motichoor Laddoo','Sweets','420','Active'],['Aloo Bhujia','Namkeen','260','Active']]},
+{id:'prod',n:'Daily Production',d:'Batches prepared today',cols:['Product','Batch','Produced (kg)','Time'],rows:[['Motichoor Laddoo','B-101','45','06:30'],['Kaju Katli','B-102','20','09:00'],['Jalebi','B-103','25','11:15']]},
+{id:'sale',n:'Daily Sale',d:'Counter and wholesale sales',cols:['Product','Sold (kg)','Rate (₹)','Total (₹)'],rows:[['Kaju Katli','6','900','5,400'],['Motichoor Laddoo','18','420','7,560'],['Jalebi','12','280','3,360']]},
+{id:'bal',n:'Balanced Product',d:'Closing stock after sales',cols:['Product','Produced','Sold','Balance'],rows:[['Motichoor Laddoo','45','18','27'],['Kaju Katli','20','6','14'],['Jalebi','25','12','13']]},
+{id:'ret',n:'Returning Product',d:'Goods returned by customers',cols:['Product','Qty (kg)','Reason','Date'],rows:[['Barfi','2','Past date','Yesterday'],['Samosa','1','Not fresh','Today']]},
+{id:'rep',n:'Report',d:'Sales and profit reports',cols:['Report','Period','Total (₹)','Status'],rows:[['Daily Sale','Today','16,320','Ready'],['Weekly Sale','This week','98,450','Ready'],['Monthly Profit','Oct 2026','3.1 L','Pending']]},
+{id:'bill',n:'Bill',d:'Customer invoices',cols:['Bill No.','Customer','Amount (₹)','Status'],rows:[['#1041','Ramesh Gupta','1,250','Paid'],['#1042','Sunita Devi','860','Paid'],['#1043','Hotel Maurya','7,400','Pending']]}];
+var $=function(s){return document.querySelector(s)},app=$('#app'),nav=$('#nav'),main=$('#main'),cur='home';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('s');setTimeout(function(){e.classList.remove('s')},2200)}
+function buildNav(){
+ var h='<li><button data-id="home"><span>'+ic('home')+'</span><span class="lb">Dashboard</span></button></li>';
+ MODS.forEach(function(m){h+='<li><button data-id="'+m.id+'">'+ic(m.id)+'<span class="lb">'+m.n+'</span><span class="bd">'+m.rows.length+'</span></button></li>'});
+ nav.innerHTML=h;
+}
+nav.onclick=function(e){var b=e.target.closest('button');if(b)go(b.dataset.id)};
+function home(){
+ var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],v=[42,55,48,63,58,71,64],mx=71,c='';
+ v.forEach(function(x,i){c+='<div class="'+(i==6?'t':'')+'"><span>₹'+x+'k</span><i style="height:'+Math.round(x/mx*100)+'%"></i>'+days[i]+'</div>'});
+ var h='<div class="ph"><div><div class="crumb">Overview</div><h2>Dashboard</h2><div class="sub">Welcome back, Ram. Here is how the shop is doing today.</div></div></div>'
+ +'<div class="stats"><div class="stat"><p>Today’s sales</p><strong>₹16,320</strong><span class="tr">▲ 8.4% vs yesterday</span></div>'
+ +'<div class="stat"><p>Production</p><strong>90 kg</strong><span class="tr">▲ 3 batches</span></div>'
+ +'<div class="stat"><p>Closing stock</p><strong>54 kg</strong><span class="tr dn">▼ 12% vs yesterday</span></div>'
+ +'<div class="stat"><p>Pending bills</p><strong>₹7,400</strong><span class="tr dn">1 invoice open</span></div></div>'
+ +'<div class="two"><div class="panel"><h3>Sales this week</h3><div class="chart">'+c+'</div></div>'
+ +'<div class="panel"><h3>Recent activity</h3><ul class="act"><li><div>Bill #1043 created<em>Hotel Maurya · 10 min ago</em></div></li><li><div>Batch B-103 completed<em>Jalebi, 25 kg · 1 hr ago</em></div></li><li><div>Material received<em>Desi Ghee, 80 kg · 3 hrs ago</em></div></li><li><div>Return recorded<em>Samosa, 1 kg · 5 hrs ago</em></div></li></ul></div></div>'
+ +'<h3>Modules</h3><div class="grid">';
+ MODS.forEach(function(m){h+='<button class="card" data-id="'+m.id+'"><div class="ci">'+ic(m.id)+'</div><div><b>'+m.n+'</b><span>'+m.d+'</span></div></button>'});
+ main.innerHTML=h+'</div>';
+ main.querySelector('.grid').onclick=function(e){var c=e.target.closest('.card');if(c)go(c.dataset.id)};
+}
+function tbl(m,q){
+ var h='',n=0;
+ m.rows.forEach(function(r,i){
+  if(q&&r.join(' ').toLowerCase().indexOf(q.toLowerCase())<0)return;n++;
+  h+='<tr>'+r.map(function(v){var s=String(v);
+   if(/^(Paid|Active|Ready)$/.test(s))return'<td><span class="pill">'+s+'</span></td>';
+   if(s==='Pending')return'<td><span class="pill w">'+s+'</span></td>';return'<td>'+esc(s)+'</td>'}).join('')
+  +'<td style="width:40px"><button class="x" data-del="'+i+'" aria-label="Delete entry">'+ic('del')+'</button></td></tr>'});
+ if(!n)return'<div class="empty">No entries found. Use “New entry” to add one.</div>';
+ return'<table><thead><tr>'+m.cols.map(function(c){return'<th>'+c+'</th>'}).join('')+'<th></th></tr></thead><tbody>'+h+'</tbody></table>';
+}
+function page(m){
+ main.innerHTML='<div class="ph"><div><div class="crumb">Dashboard / '+m.n+'</div><h2>'+m.n+'</h2><div class="sub">'+m.d+'</div></div><button class="btn" id="add">'+ic('plus')+'New entry</button></div>'
+ +'<div class="bar"><input id="q" type="search" placeholder="Search in '+m.n+'" aria-label="Search entries"></div><div id="fm"></div><div class="panel tw" id="tb">'+tbl(m,'')+'</div>';
+ var q=$('#q'),tb=$('#tb');
+ q.oninput=function(){tb.innerHTML=tbl(m,q.value)};
+ tb.onclick=function(e){var b=e.target.closest('[data-del]');if(!b)return;m.rows.splice(+b.dataset.del,1);tb.innerHTML=tbl(m,q.value);buildNav();mark();toast('Entry deleted')};
+ $('#add').onclick=function(){
+  var f=$('#fm');
+  f.innerHTML='<div class="panel fm">'+m.cols.map(function(x,i){return'<input placeholder="'+x+'" aria-label="'+x+'">'}).join('')+'<div style="display:flex;gap:8px"><button class="btn" id="sv">Save entry</button><button class="btn g" id="cn">Cancel</button></div></div>';
+  f.querySelector('input').focus();
+  $('#cn').onclick=function(){f.innerHTML=''};
+  $('#sv').onclick=function(){
+   var v=[].map.call(f.querySelectorAll('input'),function(i){return i.value.trim()});
+   if(v.some(function(x){return!x})){toast('Please fill all fields');return}
+   m.rows.unshift(v);f.innerHTML='';tb.innerHTML=tbl(m,q.value);buildNav();mark();toast('Entry saved');
+  };
+ };
+}
+function mark(){[].forEach.call(nav.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.id===cur)})}
+function go(id){cur=id;mark();if(id==='home')home();else page(MODS.filter(function(m){return m.id===id})[0]);main.scrollTop=0;app.classList.remove('open')}
+$('#gs').onkeydown=function(e){if(e.key!=='Enter')return;var v=this.value.toLowerCase(),m=MODS.filter(function(x){return x.n.toLowerCase().indexOf(v)>-1})[0];if(m){go(m.id);this.value=''}else toast('No module found')};
+$('#tg').onclick=function(){if(innerWidth<=860)app.classList.toggle('open');else app.classList.toggle('mini')};
+$('#ov').onclick=function(){app.classList.remove('open')};
+var dk=matchMedia('(prefers-color-scheme: dark)').matches;
+$('#th').onclick=function(){dk=!dk;document.documentElement.setAttribute('data-theme',dk?'dark':'light')};
+$('#today').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+buildNav();go('home');
+</script>
+</body>
+</html>
