@@ -35,10 +35,19 @@ model ImportEntry {
   id        String   @id @default(cuid())
   date      String // yyyy-mm-dd
   material  String
-  qty       Float // kg
-  rate      Float // ₹ per kg
+  qty       Float // kg/L/g
+  rate      Float // ₹ per unit
   amount    Float // qty × rate
   vendor    String
   transport Float    @default(0) // transportation charge ₹
+  createdAt DateTime @default(now())
+}
+
+// date-grouped records for all modules except import: one record per date, many items
+model GroupedEntry {
+  id        String   @id @default(cuid())
+  module    String // product | prod | sale | bal | ret | rep | bill
+  date      String // yyyy-mm-dd
+  items     String // JSON array of item rows (string[][])
   createdAt DateTime @default(now())
 }

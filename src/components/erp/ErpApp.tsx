@@ -1,8 +1,13 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { MODULES, type ErpModule, type ImportEntry } from '@/lib/erp-data'
-import { BrandLogo, Ic } from './ErpIcons'
+import {
+  MODULES,
+  type ErpModule,
+  type GroupRec,
+  type ImportEntry,
+} from '@/lib/erp-data'
+import { Ic } from './ErpIcons'
 import Dashboard from './Dashboard'
 import ModulePage from './ModulePage'
 
@@ -15,8 +20,9 @@ const formatDate = () =>
     year: 'numeric',
   })
 
+type GroupsMap = Record<string, GroupRec[]>
+
 export default function ErpApp() {
-  const [mods, setMods] = useState<ErpModule[]>(MODULES)
   const [cur, setCur] = useState('home')
   const [mini, setMini] = useState(false) // desktop collapsed sidebar
   const [open, setOpen] = useState(false) // mobile overlay sidebar
@@ -31,8 +37,11 @@ export default function ErpApp() {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [toastMsg, setToastMsg] = useState('')
   const [toastShow, setToastShow] = useState(false)
+
   const [imports, setImports] = useState<ImportEntry[]>([])
   const [importsLoaded, setImportsLoaded] = useState(false)
+  const [groups, setGroups] = useState<GroupsMap>({})
+  const [groupsLoaded, setGroupsLoaded] = useState(false)
 
   // load material imports from database
   useEffect(() => {
@@ -45,6 +54,28 @@ export default function ErpApp() {
       .catch(() => {})
       .finally(() => {
         if (alive) setImportsLoaded(true)
+      })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  // load date-grouped entries (all modules) from database
+  useEffect(() => {
+    let alive = true
+    fetch('/api/entries')
+      .then((r) => r.json())
+      .then((d) => {
+        if (!alive || !Array.isArray(d)) return
+        const map: GroupsMap = {}
+        for (const g of d as (GroupRec & { module: string })[]) {
+          ;(map[g.module] ??= []).push({ id: g.id, date: g.date, items: g.items })
+        }
+        setGroups(map)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setGroupsLoaded(true)
       })
     return () => {
       alive = false
@@ -68,46 +99,41 @@ export default function ErpApp() {
     mainRef.current?.scrollTo(0, 0)
   }, [])
 
-  const addRow = useCallback(
-    (modId: string, row: string[]) => {
-      setMods((prev) =>
-        prev.map((m) => (m.id === modId ? { ...m, rows: [row, ...m.rows] } : m))
-      )
+  /* ---------- import CRUD ---------- */
+  const addImport = useCallback(
+    async (entry: Omit<ImportEntry, 'id'>) => {
+      const res = await fetch('/api/imports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+      })
+      if (!res.ok) {
+        toast('Please fill date, qty, rate and vendor')
+        return
+      }
+      const created: ImportEntry = await res.json()
+      setImports((prev) => [created, ...prev].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)))
       toast('Entry saved')
     },
     [toast]
   )
 
-  const deleteRow = useCallback(
-    (modId: string, rowIndex: number) => {
-      setMods((prev) =>
-        prev.map((m) =>
-          m.id === modId ? { ...m, rows: m.rows.filter((_, i) => i !== rowIndex) } : m
-        )
-      )
-      toast('Entry deleted')
-    },
-    [toast]
-  )
-
-  const addImport = useCallback(
-    async (entry: Omit<ImportEntry, 'id'>) => {
-      try {
-        const res = await fetch('/api/imports', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(entry),
-        })
-        if (!res.ok) {
-          toast('Please fill all fields')
-          return
-        }
-        const created: ImportEntry = await res.json()
-        setImports((prev) => [created, ...prev])
-        toast('Entry saved')
-      } catch {
-        toast('Failed to save entry')
+  const updateImport = useCallback(
+    async (id: string, entry: Omit<ImportEntry, 'id'>) => {
+      const res = await fetch(`/api/imports/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+      })
+      if (!res.ok) {
+        toast('Please fill date, qty, rate and vendor')
+        return
       }
+      const updated: ImportEntry = await res.json()
+      setImports((prev) =>
+        prev.map((e) => (e.id === id ? updated : e)).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+      )
+      toast('Entry updated')
     },
     [toast]
   )
@@ -121,16 +147,56 @@ export default function ErpApp() {
     [toast]
   )
 
+  /* ---------- date-grouped module CRUD ---------- */
+  const createGroup = useCallback(
+    async (modId: string, date: string, items: string[][]) => {
+      const res = await fetch('/api/entries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ module: modId, date, items }),
+      })
+      if (!res.ok) throw new Error('create failed')
+      const rec: GroupRec = await res.json()
+      setGroups((prev) => ({ ...prev, [modId]: [...(prev[modId] ?? []), rec] }))
+    },
+    []
+  )
+
+  const updateGroup = useCallback(
+    async (modId: string, id: string, date: string, items: string[][]) => {
+      const res = await fetch(`/api/entries/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, items }),
+      })
+      if (!res.ok) throw new Error('update failed')
+      const rec: GroupRec = await res.json()
+      setGroups((prev) => ({
+        ...prev,
+        [modId]: (prev[modId] ?? []).map((g) => (g.id === id ? rec : g)),
+      }))
+    },
+    []
+  )
+
+  const deleteGroup = useCallback((modId: string, id: string) => {
+    setGroups((prev) => ({ ...prev, [modId]: (prev[modId] ?? []).filter((g) => g.id !== id) }))
+    fetch(`/api/entries/${id}`, { method: 'DELETE' }).catch(() => {})
+  }, [])
+
   const countFor = useCallback(
-    (m: ErpModule) => (m.id === 'import' ? imports.length : m.rows.length),
-    [imports]
+    (m: ErpModule) => {
+      if (m.id === 'import') return imports.length
+      return (groups[m.id] ?? []).reduce((a, r) => a + r.items.length, 0)
+    },
+    [imports, groups]
   )
 
   const onGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return
     const v = e.currentTarget.value.trim().toLowerCase()
     if (!v) return
-    const m = mods.find((x) => x.n.toLowerCase().includes(v))
+    const m = MODULES.find((x) => x.n.toLowerCase().includes(v))
     if (m) {
       go(m.id)
       if (searchRef.current) searchRef.current.value = ''
@@ -145,14 +211,13 @@ export default function ErpApp() {
   }
 
   const appCls = 'app' + (mini ? ' mini' : '') + (open ? ' open' : '')
-  const curMod = cur === 'home' ? null : mods.find((m) => m.id === cur)
-  const userName = 'Ram'
+  const curMod = cur === 'home' ? null : MODULES.find((m) => m.id === cur)
 
   return (
     <div className={appCls}>
       <aside aria-label="Main menu">
         <div className="brand">
-          <BrandLogo />
+          <img className="lg" src="/logo.png" alt="Sri Ram Sweets logo" />
           <div>
             <b>Sri Ram</b>
             <span>Sweets &amp; Namkeen</span>
@@ -170,7 +235,7 @@ export default function ErpApp() {
               <span className="lb">Dashboard</span>
             </button>
           </li>
-          {mods.map((m) => (
+          {MODULES.map((m) => (
             <li key={m.id}>
               <button
                 className={cur === m.id ? 'on' : ''}
@@ -193,6 +258,10 @@ export default function ErpApp() {
         <button className="ib" onClick={toggleSidebar} aria-label="Toggle menu">
           <Ic name="menu" />
         </button>
+        <div className="hb">
+          <img className="lg" src="/logo.png" alt="" />
+          <b>Sri Ram Sweets</b>
+        </div>
         <div className="sr">
           <Ic name="search" />
           <input
@@ -229,16 +298,20 @@ export default function ErpApp() {
           <ModulePage
             key={curMod.id}
             mod={curMod}
-            importEntries={imports}
+            imports={imports}
             importsLoaded={importsLoaded}
-            onAdd={addRow}
-            onDelete={deleteRow}
+            groups={groups}
+            groupsLoaded={groupsLoaded}
             onAddImport={addImport}
+            onUpdateImport={updateImport}
             onDeleteImport={deleteImport}
+            onCreateGroup={createGroup}
+            onUpdateGroup={updateGroup}
+            onDeleteGroup={deleteGroup}
             toast={toast}
           />
         ) : (
-          <Dashboard mods={mods} userName={userName} go={go} />
+          <Dashboard go={go} />
         )}
       </main>
 

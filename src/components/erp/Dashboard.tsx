@@ -1,15 +1,13 @@
 'use client'
 
-import { DASHBOARD, type ErpModule } from '@/lib/erp-data'
+import { DASHBOARD, MODULES } from '@/lib/erp-data'
 import { Ic } from './ErpIcons'
 
 interface DashboardProps {
-  mods: ErpModule[]
-  userName: string
   go: (id: string) => void
 }
 
-export default function Dashboard({ mods, userName, go }: DashboardProps) {
+export default function Dashboard({ go }: DashboardProps) {
   const mx = Math.max(...DASHBOARD.sales)
 
   return (
@@ -18,7 +16,7 @@ export default function Dashboard({ mods, userName, go }: DashboardProps) {
         <div>
           <div className="crumb">Overview</div>
           <h2>Dashboard</h2>
-          <div className="sub">Welcome back, {userName}. Here is how the shop is doing today.</div>
+          <div className="sub">Welcome back, Ram. Here is how the shop is doing today.</div>
         </div>
       </div>
 
@@ -62,7 +60,7 @@ export default function Dashboard({ mods, userName, go }: DashboardProps) {
 
       <h3>Modules</h3>
       <div className="grid">
-        {mods.map((m) => (
+        {MODULES.map((m) => (
           <button className="card" key={m.id} onClick={() => go(m.id)}>
             <div className="ci">
               <Ic name={m.id} />

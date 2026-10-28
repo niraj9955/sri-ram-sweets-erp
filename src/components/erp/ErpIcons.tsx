@@ -12,12 +12,8 @@ const P: Record<string, ReactNode> = {
   bill: <path d="M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6" />,
   plus: <path d="M12 5v14M5 12h14" />,
   del: <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" />,
-  hist: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 3" />
-    </>
-  ),
+  edit: <path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />,
+  x: <path d="M6 6l12 12M18 6L6 18" />,
   search: (
     <>
       <circle cx="11" cy="11" r="7" />
@@ -33,22 +29,6 @@ export function Ic({ name }: { name: string }) {
   return (
     <svg className="i" viewBox="0 0 24 24" aria-hidden="true">
       {P[name] ?? null}
-    </svg>
-  )
-}
-
-export function BrandLogo() {
-  return (
-    <svg width="38" height="38" viewBox="0 0 48 48" aria-label="Sri Ram Sweets logo">
-      <circle cx="24" cy="24" r="23" fill="#d9780a" />
-      <circle cx="24" cy="24" r="20" fill="none" stroke="#fff" strokeOpacity=".5" strokeWidth="1" />
-      <circle cx="24" cy="27" r="11" fill="#7c2d12" />
-      <circle cx="20" cy="23" r="1.8" fill="#fbd38d" />
-      <circle cx="27" cy="22" r="1.8" fill="#fbd38d" />
-      <circle cx="24" cy="29" r="1.8" fill="#fbd38d" />
-      <circle cx="18" cy="30" r="1.8" fill="#fbd38d" />
-      <circle cx="30" cy="29" r="1.8" fill="#fbd38d" />
-      <path d="M24 16c-3-5-8-5-9-2 3 0 6 1 9 2zM24 16c3-5 8-5 9-2-3 0-6 1-9 2z" fill="#fff" />
     </svg>
   )
 }

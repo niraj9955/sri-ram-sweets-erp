@@ -1,28 +1,12 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { SEED_IMPORTS } from '@/lib/erp-data'
 
-// seed demo data (relative to today) when the table is empty
+// seed demo data when the table is empty
 async function seedIfEmpty() {
   const count = await db.importEntry.count()
   if (count > 0) return
-  const d = (daysAgo: number) => {
-    const t = new Date()
-    t.setDate(t.getDate() - daysAgo)
-    return t.toISOString().slice(0, 10)
-  }
-  const seed = [
-    { date: d(0), material: 'Sugar', qty: 200, rate: 44, vendor: 'Gupta Traders', transport: 500 },
-    { date: d(0), material: 'Milk', qty: 120, rate: 34, vendor: 'Gopal Dairy', transport: 150 },
-    { date: d(1), material: 'Desi Ghee', qty: 80, rate: 610, vendor: 'Amul Depot', transport: 900 },
-    { date: d(2), material: 'Refined Flour (Maida)', qty: 150, rate: 32, vendor: 'Sharma Mill', transport: 400 },
-    { date: d(3), material: 'Sugar', qty: 150, rate: 43, vendor: 'Gupta Traders', transport: 500 },
-    { date: d(4), material: 'Cashew', qty: 25, rate: 780, vendor: 'Krishna Dry Fruits', transport: 250 },
-    { date: d(5), material: 'Besan', qty: 90, rate: 58, vendor: 'Sharma Mill', transport: 300 },
-    { date: d(7), material: 'Cardamom (Elaichi)', qty: 2, rate: 2400, vendor: 'Spice House', transport: 80 },
-  ]
-  await db.importEntry.createMany({
-    data: seed.map((s) => ({ ...s, amount: s.qty * s.rate })),
-  })
+  await db.importEntry.createMany({ data: SEED_IMPORTS })
 }
 
 export async function GET() {
@@ -49,11 +33,11 @@ export async function POST(req: Request) {
     const transport = Number(b.transport) || 0
 
     if (!date || !material || !vendor || !Number.isFinite(qty) || qty <= 0 || !Number.isFinite(rate) || rate < 0) {
-      return NextResponse.json({ error: 'Please fill all fields' }, { status: 400 })
+      return NextResponse.json({ error: 'Please fill date, qty, rate and vendor' }, { status: 400 })
     }
 
     const entry = await db.importEntry.create({
-      data: { date, material, vendor, qty, rate, amount: qty * rate, transport },
+      data: { date, material, vendor, qty, rate, amount: Math.round(qty * rate * 100) / 100, transport },
     })
     return NextResponse.json(entry, { status: 201 })
   } catch (e) {

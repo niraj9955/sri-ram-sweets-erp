@@ -46,3 +46,24 @@ Stage Summary:
 - All 4 changes verified in browser: new color scheme (light+dark), import form with dropdown + auto amount (40×300=12,000 checked), date picker in all module forms, Sugar history modal showing 2 entries with totals.
 - Import data now PERSISTS in SQLite across refreshes (verified via reload); other modules still in-memory.
 - Lint clean, dev.log clean, API returns 8 seeded entries.
+
+---
+Task ID: 3
+Agent: Z.ai Code (main agent)
+Task: User uploaded new HTML version "Sri_Ram_Sweets_ERP (2).html" with "update" instruction — sync React app to v2 (purple sidebar + teal header + logo, date-grouped multi-item modules, import tabs with history, edit + 2-click delete + date-range filters).
+
+Work Log:
+- Extracted base64 PNG logo from HTML → public/logo.png (112x112); used in sidebar brand, header .hb brand, and favicon (layout metadata).
+- Prisma: added GroupedEntry model (module, date, items JSON, createdAt); db:push; cleared stale import seed rows.
+- erp-data.ts v2: MATS master (12 materials with units kg/L/g), Field type system (txt/num/sel/time/pn), MODULES with typed cols, SEED_GROUPS (10 records across 7 modules), SEED_IMPORTS (10 rows, new vendors), helpers fd()/unit()/inr()/round2()/sortDesc()/todayStr(). GroupRec.items as (string|number)[][].
+- APIs: /api/imports (GET w/ new seed, POST) + PUT on /api/imports/[id] for edit; new /api/entries (GET w/ seed, POST) + PUT/DELETE on /api/entries/[id]. Fixed @next/next/no-assign-module-variable (module→modId).
+- erp.css v2: purple sidebar (--side #2f2457 / dark #1a1338), teal header (--hd #0e6b5c / dark #0b3d35, white text/icon buttons/search), 40px btn/input heights, new classes: .fl/.lbl/.tabs/.lk/.hb/.ac/td.dt/tbody.grp/.fp/.fa/.tw2/.it/.arm/.lg, card/stat min-heights, 520px hb-text hide. Removed old modal CSS + input:read-only override (v2 fidelity).
+- ErpApp: header brand (logo + "Sri Ram Sweets"), groups state map fetched from /api/entries, import CRUD (add/update/delete w/ date-desc sort), group CRUD (create/update/delete), countFor() = import length or sum of group items for badges.
+- ImportPage v2: TABS ("Import entries" / "Material history"); entries tab = search + From/To date filters + table (dd-mm-yyyy dates, material .lk links → history tab, qty+unit, ₹ formats, edit + armed delete); form = date, MATS select, qty w/ dynamic unit label, rate, readonly auto amount (2-dec), vendor input + datalist of existing vendors, transport; validation "Please fill date, qty, rate and vendor". History tab = material select, 4 stats (total received w/ unit, total amount, average rate, transport paid), entries table w/ Total column, "Supplied by: vendor (qty)" summary, All-materials table (entries/total qty/last imported).
+- GenericPage v2: grouped tables (sorted date desc, tbody.grp, date cell rowspan w/ "N items" small, actions rowspan, pills incl. Inactive), search within items + date filters, armed 2-click delete ("Click delete again to confirm", 3s window), edit prefill, multi-item form (.it table: per-type inputs — sel/num/time/pn w/ product-name datalist, add/remove item rows, remove disabled at 1 row), save logic: filters typed rows, validates date/items/fields, converts nums, MERGES into existing same-date record ("Added to existing date" / "Merged into existing date" toasts).
+- Deleted HistoryModal.tsx (replaced by history tab). Dashboard now imports MODULES directly.
+- Fixed stale Turbopack/Prisma issue: rm -rf .next + full dev restart (groupedEntry undefined in cached client).
+
+Stage Summary:
+- All v2 features verified in browser: teal header + purple sidebar + logos (light & dark), tabs, grouped tables with rowspans, multi-item add w/ merge ("Added to existing date", Product badge 5→7, group shows 5 items), edit (rate 44→650→44, amount auto), armed delete (badge 10→9), history stats math (750 kg / ₹32,950 / ₹43.93 avg), units (L/g/kg), dd-mm-yyyy dates, ₹ en-IN formatting, persistence across reload, mobile ≤520px brand-text hide.
+- Lint clean, dev.log clean, both APIs seeded correctly (10 imports + 10 grouped records).
