@@ -33,7 +33,7 @@ export default function RootLayout({
         />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- global in App Router layout */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Rozha+One&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Rozha+One&display=swap"
           rel="stylesheet"
         />
       </head>

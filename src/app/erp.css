@@ -1,8 +1,8 @@
-/* Sri Ram Sweets ERP — v2 (purple sidebar, teal header, date-grouped modules) */
-:root{--bg:#f5f3f0;--sf:#fff;--ink:#241a17;--mu:#74665e;--ln:#e6e0d9;--side:#2f2457;--sideh:#43377d;--sink:#e6e0fa;--ac:#d9780a;--acs:#fdf0dc;--head:#0e6b5c;--hd:#0e6b5c;--ok:#1f7a4d;--okb:#e2f3ea;--wn:#a8560a;--wnb:#fdeed9;--sh:0 1px 2px rgba(36,26,23,.06),0 4px 14px rgba(36,26,23,.05);
+/* Sri Ram Sweets ERP — v3 (yellow sidebar, red nav rows, brand mithai colors) */
+:root{--bg:#f5f3f0;--sf:#fff;--ink:#241a17;--mu:#74665e;--ln:#e6e0d9;--side:#FDC635;--sink:#6d4a02;--navbg:#C00A27;--navh:#ad0924;--navon:#98071c;--navtx:#edcc3f;--ac:#d9780a;--acs:#fdf0dc;--head:#0e6b5c;--hd:#0e6b5c;--ok:#1f7a4d;--okb:#e2f3ea;--wn:#a8560a;--wnb:#fdeed9;--sh:0 1px 2px rgba(36,26,23,.06),0 4px 14px rgba(36,26,23,.05);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#1a1338;--sideh:#2a2158;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19;--hd:#0b3d35}}
-:root[data-theme="dark"]{--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#1a1338;--sideh:#2a2158;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19;--hd:#0b3d35}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#FDC635;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19;--hd:#0b3d35}}
+:root[data-theme="dark"]{--bg:#171110;--sf:#231a19;--ink:#f3e8dd;--mu:#b09a8b;--ln:#392a29;--side:#FDC635;--acs:#3a2711;--okb:#173526;--wnb:#3a2711;--head:#231a19;--hd:#0b3d35}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{font-family:Mukta,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px}
@@ -10,21 +10,19 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .app{display:grid;grid-template-columns:256px 1fr;grid-template-rows:64px 1fr auto;grid-template-areas:"side top" "side main" "side foot";height:100%;transition:grid-template-columns .25s}
 .app.mini{grid-template-columns:72px 1fr}
 aside{grid-area:side;background:var(--side);color:var(--sink);display:flex;flex-direction:column;overflow:hidden;z-index:20}
-.brand{display:flex;align-items:center;gap:12px;height:64px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
-.brand b{font-family:'Rozha One',serif;font-weight:400;font-size:19px;line-height:1.05;color:#fff;white-space:nowrap}
-.brand span{display:block;font-family:Mukta,sans-serif;font-weight:500;font-size:10.5px;opacity:.6;margin-top:2px;white-space:nowrap}
-.mt{padding:18px 22px 6px;font-size:12.5px;opacity:.5;white-space:nowrap}
+.brand{display:flex;align-items:center;gap:12px;height:64px;padding:0 18px;border-bottom:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.brand b{font-family:'Rozha One',serif;font-weight:400;font-size:19px;line-height:1.05;color:#C00A27;white-space:nowrap}
+.brand span{display:block;font-family:Mukta,sans-serif;font-weight:500;font-size:10.5px;opacity:.75;margin-top:2px;white-space:nowrap}
+.mt{padding:18px 22px 6px;font-size:12.5px;opacity:.65;white-space:nowrap}
 .nav{list-style:none;padding:4px 12px;overflow:auto;flex:1}
-.nav button{width:100%;display:flex;align-items:center;gap:13px;background:none;border:0;color:inherit;font-family:Mukta,sans-serif;font-weight:500;font-size:15px;padding:10px 12px;border-radius:8px;cursor:pointer;text-align:left;margin-bottom:2px;white-space:nowrap;position:relative}
-.nav button:hover{background:var(--sideh)}
-.nav button.on{background:var(--sideh);color:#fff}
-.nav button.on::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--ac)}
-.nav button.on svg{color:var(--ac)}
-.bd{margin-left:auto;font-size:12px;background:rgba(255,255,255,.1);border-radius:20px;padding:0 8px}
-.sfo{padding:14px 22px;font-size:12px;opacity:.5;border-top:1px solid rgba(255,255,255,.08);white-space:nowrap}
-.mini .brand b,.mini .brand span,.mini .mt,.mini .lb,.mini .bd,.mini .sfo{display:none}
+.nav button{width:100%;display:flex;align-items:center;gap:13px;background:var(--navbg);border:0;color:var(--navtx);font-family:Roboto,sans-serif;font-weight:500;font-size:15px;line-height:24px;padding:8px 12px;border-radius:8px;cursor:pointer;text-align:left;margin-bottom:4px;white-space:nowrap;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.nav button:hover{background:var(--navh)}
+.nav button.on{background:var(--navon);color:var(--navtx)}
+.nav button.on::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:0 3px 3px 0;background:#FDC635}
+.nav button.on svg{color:#FDC635}
+.sfo{padding:14px 22px;font-size:12px;opacity:.65;border-top:1px solid rgba(0,0,0,.12);white-space:nowrap}
+.mini .brand b,.mini .brand span,.mini .mt,.mini .lb,.mini .sfo{display:none}
 .mini .nav button{justify-content:center;padding:10px 0}
-.mini .nav button.on::before{left:-12px}
 header{grid-area:top;background:var(--hd);color:#fff;display:flex;align-items:center;gap:14px;padding:0 24px;box-shadow:0 2px 8px rgba(0,0,0,.18);z-index:5}
 .ib{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;width:40px;height:40px;border-radius:9px;cursor:pointer;display:grid;place-items:center;position:relative}
 .ib:hover{background:rgba(255,255,255,.28)}
@@ -131,7 +129,7 @@ td.dt small{display:block;color:var(--mu);font-weight:500;font-size:12px}
 aside{position:fixed;inset:0 auto 0 0;width:256px;transform:translateX(-100%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px)}
 .app.open aside{transform:none}
 .app.open .ov{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:15}
-.app.mini .brand b,.app.mini .brand span,.app.mini .mt,.app.mini .lb,.app.mini .bd,.app.mini .sfo{display:revert}
+.app.mini .brand b,.app.mini .brand span,.app.mini .mt,.app.mini .lb,.app.mini .sfo{display:revert}
 .app.mini .nav button{justify-content:flex-start;padding:10px 12px}
 .two{grid-template-columns:1fr}.user div,.sr{display:none}.sp{display:block}
 main{padding:20px 16px}header{padding:0 14px}footer{padding:12px 16px}

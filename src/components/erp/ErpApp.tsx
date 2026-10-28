@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import {
   MODULES,
-  type ErpModule,
   type GroupRec,
   type ImportEntry,
 } from '@/lib/erp-data'
@@ -184,14 +183,6 @@ export default function ErpApp() {
     fetch(`/api/entries/${id}`, { method: 'DELETE' }).catch(() => {})
   }, [])
 
-  const countFor = useCallback(
-    (m: ErpModule) => {
-      if (m.id === 'import') return imports.length
-      return (groups[m.id] ?? []).reduce((a, r) => a + r.items.length, 0)
-    },
-    [imports, groups]
-  )
-
   const onGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return
     const v = e.currentTarget.value.trim().toLowerCase()
@@ -244,7 +235,6 @@ export default function ErpApp() {
               >
                 <Ic name={m.id} />
                 <span className="lb">{m.n}</span>
-                <span className="bd">{countFor(m)}</span>
               </button>
             </li>
           ))}
